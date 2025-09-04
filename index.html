@@ -3,59 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Pontuação de Jogos</title>
+    <title>Sistema de Pontuação - Mobile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --primary: #4ecca3;
+            --secondary: #1a1a2e;
+            --accent: #ff6b6b;
+            --dark: #16213e;
+            --darker: #0f3460;
+            --text: #e6e6e6;
         }
         
         body {
-            background-color: #1a1a2e;
-            color: #e6e6e6;
-            padding: 20px;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--darker) 100%);
+            color: var(--text);
             line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
         
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #16213e;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            max-width: 100%;
+            padding: 16px;
         }
         
         header {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #4e4e8d;
+            padding: 20px 16px;
+            background: var(--dark);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
         
         h1 {
-            color: #4ecca3;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
         }
         
         h2 {
-            color: #4ecca3;
+            color: var(--primary);
+            font-size: 1.4rem;
             margin: 20px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
         }
         
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-        
-        @media (max-width: 768px) {
-            .grid-container {
-                grid-template-columns: 1fr;
-            }
+        .card {
+            background: var(--dark);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
         .form-group {
@@ -65,143 +76,166 @@
         label {
             display: block;
             margin-bottom: 8px;
-            color: #4ecca3;
-            font-weight: bold;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1rem;
         }
         
         input, select {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #4e4e8d;
-            border-radius: 6px;
-            background-color: #0f3460;
-            color: #e6e6e6;
-            font-size: 16px;
+            padding: 16px;
+            border: 2px solid var(--darker);
+            border-radius: 12px;
+            background-color: var(--darker);
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
         }
         
         button {
-            background-color: #4ecca3;
-            color: #1a1a2e;
+            background-color: var(--primary);
+            color: var(--secondary);
             border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
+            padding: 16px 20px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
             width: 100%;
-            margin-bottom: 10px;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         button:hover {
             background-color: #38b592;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
         }
         
         button.reset-btn {
-            background-color: #ff6b6b;
+            background-color: var(--accent);
         }
         
         button.reset-btn:hover {
             background-color: #ee5253;
         }
         
-        table {
+        .ranking-table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            background-color: #0f3460;
-            border-radius: 8px;
+            background-color: var(--darker);
+            border-radius: 12px;
             overflow: hidden;
+            font-size: 0.9rem;
         }
         
-        th, td {
-            padding: 15px;
+        .ranking-table th, .ranking-table td {
+            padding: 14px 12px;
             text-align: left;
-            border-bottom: 1px solid #4e4e8d;
+            border-bottom: 1px solid rgba(78, 204, 163, 0.2);
         }
         
-        th {
-            background-color: #4e4e8d;
-            color: #4ecca3;
-            font-weight: bold;
+        .ranking-table th {
+            background-color: var(--primary);
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 0.95rem;
         }
         
-        tr:hover {
-            background-color: #1a1a2e;
+        .ranking-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .ranking-table tr:hover {
+            background-color: rgba(26, 26, 46, 0.5);
         }
         
         .ranking-badge {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            text-align: center;
-            line-height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background-color: #4ecca3;
-            color: #1a1a2e;
+            background-color: var(--primary);
+            color: var(--secondary);
             font-weight: bold;
             margin-right: 10px;
+            font-size: 0.9rem;
         }
         
         .top-1 {
             background-color: gold;
-            color: #1a1a2e;
         }
         
         .top-2 {
             background-color: silver;
-            color: #1a1a2e;
         }
         
         .top-3 {
             background-color: #cd7f32;
-            color: #1a1a2e;
         }
         
         .points-display {
             font-weight: bold;
-            color: #4ecca3;
+            color: var(--primary);
         }
         
         .player-name {
-            font-weight: bold;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 120px;
         }
         
         .instructions {
-            background-color: #0f3460;
+            background-color: var(--darker);
             padding: 20px;
-            border-radius: 8px;
-            margin-top: 30px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 0.95rem;
         }
         
         .instructions h2 {
-            color: #4ecca3;
-            margin-bottom: 15px;
+            font-size: 1.3rem;
         }
         
         .instructions ul {
             list-style-type: none;
-            padding-left: 20px;
+            padding-left: 0;
         }
         
         .instructions li {
-            margin-bottom: 10px;
-            padding-left: 20px;
+            margin-bottom: 12px;
+            padding-left: 24px;
             position: relative;
         }
         
         .instructions li:before {
             content: "•";
-            color: #4ecca3;
+            color: var(--primary);
             font-weight: bold;
             position: absolute;
-            left: 0;
+            left: 10px;
         }
         
         .reset-section {
-            margin-top: 30px;
+            margin-top: 20px;
             padding-top: 20px;
-            border-top: 2px solid #4e4e8d;
+            border-top: 2px solid var(--darker);
             text-align: center;
         }
         
@@ -212,20 +246,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.85);
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
         
         .modal-content {
-            background-color: #16213e;
-            padding: 30px;
-            border-radius: 10px;
+            background-color: var(--dark);
+            padding: 25px;
+            border-radius: 16px;
             text-align: center;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
         
         .modal-buttons {
@@ -237,27 +272,105 @@
         
         .modal-buttons button {
             width: auto;
-            min-width: 100px;
+            min-width: 120px;
+            padding: 14px 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: var(--darker);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            background: var(--darker);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: var(--secondary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Swipe indicator */
+        .swipe-indicator {
+            text-align: center;
+            margin: 10px 0;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        
+        /* Animation for table rows */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .ranking-table tr {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 380px) {
+            .ranking-table {
+                font-size: 0.8rem;
+            }
+            
+            .ranking-table th, .ranking-table td {
+                padding: 10px 8px;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🏆 Sistema de Pontuação</h1>
-            <p>Registro e acompanhamento de pontos em competições de jogos</p>
+            <h1><i class="fas fa-trophy"></i> Sistema de Pontuação</h1>
+            <p>Competição de Jogos - Mobile</p>
         </header>
         
-        <div class="grid-container">
-            <div class="form-section">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('form')">
+                <i class="fas fa-plus-circle"></i> Adicionar
+            </div>
+            <div class="tab" onclick="switchTab('ranking')">
+                <i class="fas fa-list-ol"></i> Classificação
+            </div>
+        </div>
+        
+        <div id="form-tab" class="tab-content active">
+            <div class="card">
                 <h2>Adicionar Pontuação</h2>
                 <div class="form-group">
-                    <label for="playerName">Nome do Jogador:</label>
+                    <label for="playerName"><i class="fas fa-user"></i> Nome do Jogador:</label>
                     <input type="text" id="playerName" placeholder="Digite o nome do jogador">
                 </div>
                 
                 <div class="form-group">
-                    <label for="gameSelect">Selecione o Jogo:</label>
+                    <label for="gameSelect"><i class="fas fa-gamepad"></i> Selecione o Jogo:</label>
                     <select id="gameSelect">
                         <option value="">-- Selecione um jogo --</option>
                         <option value="99noites">99 Noites na Floresta</option>
@@ -267,39 +380,52 @@
                 </div>
                 
                 <div class="form-group" id="performanceField" style="display: none;">
-                    <label for="performance">Desempenho:</label>
+                    <label for="performance"><i class="fas fa-medal"></i> Desempenho:</label>
                     <select id="performance">
                         <!-- Opções preenchidas dinamicamente conforme o jogo -->
                     </select>
                 </div>
                 
-                <button onclick="addPoints()">Adicionar Pontos</button>
-                
-                <div class="reset-section">
-                    <h2>Gerenciar Tabela</h2>
-                    <button class="reset-btn" onclick="showResetModal()">Reiniciar Tabela</button>
-                </div>
+                <button onclick="addPoints()">
+                    <i class="fas fa-plus"></i> Adicionar Pontos
+                </button>
             </div>
             
-            <div class="ranking-section">
-                <h2>Classificação Atual</h2>
-                <table id="rankingTable">
-                    <thead>
-                        <tr>
-                            <th>Posição</th>
-                            <th>Jogador</th>
-                            <th>Pontuação</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Conteúdo preenchido dinamicamente -->
-                    </tbody>
-                </table>
+            <div class="card">
+                <div class="reset-section">
+                    <h2>Gerenciar Tabela</h2>
+                    <button class="reset-btn" onclick="showResetModal()">
+                        <i class="fas fa-redo"></i> Reiniciar Tabela
+                    </button>
+                </div>
             </div>
         </div>
         
-        <div class="instructions">
-            <h2>Como Funciona o Sistema de Pontos</h2>
+        <div id="ranking-tab" class="tab-content">
+            <div class="card">
+                <h2>Classificação Atual</h2>
+                <div class="swipe-indicator">
+                    <i class="fas fa-arrows-alt-h"></i> Deslize para ver mais
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="ranking-table" id="rankingTable">
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th>Jogador</th>
+                                <th>Pontos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Conteúdo preenchido dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card instructions">
+            <h2>Como Funciona</h2>
             <ul>
                 <li><strong>99 Noites na Floresta:</strong> 
                     100 noites = 200 pontos | 130+ noites = 250 pontos</li>
@@ -308,18 +434,18 @@
                 <li><strong>Outro Jogo:</strong> 
                     70 a 100 pontos (valor variável)</li>
             </ul>
-            <p>Os dados são salvos automaticamente no seu navegador usando localStorage, permitindo que você feche e retorne posteriormente sem perder as informações.</p>
+            <p>Os dados são salvos automaticamente no seu celular.</p>
         </div>
     </div>
 
     <!-- Modal de Confirmação para Reiniciar Tabela -->
     <div id="resetModal" class="modal">
         <div class="modal-content">
-            <h2>Reiniciar Tabela</h2>
+            <h2><i class="fas fa-exclamation-triangle"></i> Reiniciar Tabela</h2>
             <p>Tem certeza que deseja reiniciar a tabela? Todos os dados serão perdidos e a tabela voltará aos valores iniciais.</p>
             <div class="modal-buttons">
-                <button onclick="resetTable()">Sim, Reiniciar</button>
-                <button class="reset-btn" onclick="hideResetModal()">Cancelar</button>
+                <button onclick="resetTable()"><i class="fas fa-check"></i> Sim</button>
+                <button class="reset-btn" onclick="hideResetModal()"><i class="fas fa-times"></i> Cancelar</button>
             </div>
         </div>
     </div>
@@ -364,7 +490,51 @@
             loadData();
             updateRankingTable();
             setupGameSelect();
+            setupSwipe();
         });
+
+        // Configura detecção de gestos de swipe
+        function setupSwipe() {
+            let startX = 0;
+            let endX = 0;
+            
+            document.addEventListener('touchstart', function(event) {
+                startX = event.changedTouches[0].screenX;
+            }, false);
+            
+            document.addEventListener('touchend', function(event) {
+                endX = event.changedTouches[0].screenX;
+                handleSwipe();
+            }, false);
+            
+            function handleSwipe() {
+                if (startX - endX > 50) {
+                    // Swipe left - go to ranking
+                    switchTab('ranking');
+                } else if (endX - startX > 50) {
+                    // Swipe right - go to form
+                    switchTab('form');
+                }
+            }
+        }
+
+        // Alternar entre abas
+        function switchTab(tabName) {
+            // Esconder todas as abas
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Mostrar a aba selecionada
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Atualizar botões de aba
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelector(`.tab:nth-child(${tabName === 'form' ? 1 : 2})`).classList.add('active');
+        }
 
         // Configura o evento de change para o select de jogos
         function setupGameSelect() {
@@ -432,7 +602,7 @@
                 row.innerHTML = `
                     <td><span class="ranking-badge ${badgeClass}">${index + 1}</span></td>
                     <td class="player-name">@${player.name}</td>
-                    <td class="points-display">${player.points} pontos</td>
+                    <td class="points-display">${player.points}</td>
                 `;
                 
                 tableBody.appendChild(row);
@@ -481,12 +651,15 @@
             saveData();
             
             // Feedback para o usuário
-            alert(`Pontos adicionados com sucesso! ${pointsToAdd} pontos para ${playerName}.`);
+            alert(`✅ ${pointsToAdd} pontos adicionados para ${playerName}.`);
             
             // Limpa os campos do formulário
             document.getElementById('playerName').value = '';
             document.getElementById('gameSelect').value = '';
             document.getElementById('performanceField').style.display = 'none';
+            
+            // Muda para a aba de classificação
+            switchTab('ranking');
         }
 
         // Mostra o modal de confirmação para reiniciar a tabela
